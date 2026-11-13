@@ -6,13 +6,13 @@
     <title>Draft Awal - SIM-PKL SMK</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root { --navy: #0f2942; --navy-dark: #091a2c; --navy-light: #1e4268; }
 
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f7fb; color: #1e293b; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f7fb; }
 
         .btn-navy { background: var(--navy); color: #fff; border: none; }
         .btn-navy:hover { background: var(--navy-light); color: #fff; }
@@ -20,385 +20,216 @@
         /* Login */
         #login-page {
             min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
-            background: linear-gradient(135deg, var(--navy-dark), var(--navy) 60%, var(--navy-light));
+            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
         }
-        .login-card { background: #fff; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,.25); max-width: 440px; width: 100%; overflow: hidden; }
-        .login-header { background: var(--navy); color: #fff; padding: 30px 25px; text-align: center; }
+        .login-card { background: #fff; border-radius: 16px; max-width: 420px; width: 100%; overflow: hidden; }
+        .login-header { background: var(--navy); color: #fff; padding: 28px; text-align: center; }
 
         /* Interface utama */
         #app { display: none; }
-        #sidebar { width: 260px; background: var(--navy); color: #fff; position: fixed; top: 0; left: 0; bottom: 0; z-index: 1030; transition: margin .3s; }
-        #sidebar.hidden-menu { margin-left: -260px; }
+        #sidebar { width: 240px; background: var(--navy); color: #fff; position: fixed; top: 0; bottom: 0; left: 0; }
         .brand { padding: 20px; background: var(--navy-dark); }
-        .menu-link { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: rgba(255,255,255,.8); text-decoration: none; border-left: 4px solid transparent; }
-        .menu-link:hover, .menu-link.active { background: rgba(255,255,255,.1); color: #fff; border-left-color: #60a5fa; }
-
-        #main { margin-left: 260px; min-height: 100vh; transition: margin .3s; }
-        #main.full { margin-left: 0; }
-        .topbar { background: #fff; box-shadow: 0 2px 10px rgba(15,41,66,.06); padding: 14px 24px; }
-        .banner { background: linear-gradient(90deg, var(--navy), var(--navy-light)); color: #fff; border-radius: 12px; padding: 20px 24px; }
-        .box { background: #fff; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(15,41,66,.05); }
+        .menu-link { display: block; padding: 12px 20px; color: rgba(255,255,255,.8); text-decoration: none; border-left: 4px solid transparent; }
+        .menu-link:hover { background: rgba(255,255,255,.1); color: #fff; border-left-color: #60a5fa; }
+        #main { margin-left: 240px; }
+        .topbar { background: #fff; padding: 14px 24px; box-shadow: 0 2px 10px rgba(15,41,66,.06); }
+        .box { background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(15,41,66,.05); padding: 20px; }
         .stat { border-left: 4px solid var(--navy); }
-        .stat .icon { width: 48px; height: 48px; border-radius: 10px; background: rgba(15,41,66,.08); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-        .table thead th { background: var(--navy); color: #fff; font-weight: 500; border: none; }
-
+        .table thead th { background: var(--navy); color: #fff; font-weight: 500; }
         .view { display: none; }
 
         @media (max-width: 768px) {
-            #sidebar { margin-left: -260px; }
-            #sidebar.show-menu { margin-left: 0; }
+            #sidebar { position: static; width: 100%; }
             #main { margin-left: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ========== HALAMAN LOGIN ========== -->
+    <!-- ===== HALAMAN LOGIN ===== -->
     <section id="login-page">
-        <div class="login-card">
+        <div class="login-card shadow-lg">
             <div class="login-header">
-                <i class="bi bi-mortarboard-fill fs-1 d-block mb-2"></i>
-                <h5 class="fw-bold mb-1">SISTEM INFORMASI PKL SMK</h5>
-                <small class="text-white-50">Pemilihan &amp; Monitoring Tempat Praktik Kerja Lapangan</small>
+                <i class="bi bi-mortarboard-fill fs-1"></i>
+                <h5 class="fw-bold mb-1">SIM-PKL SMK</h5>
+                <small class="text-white-50">Pemilihan &amp; Monitoring Tempat PKL</small>
             </div>
-
-            <form id="form-login" class="p-4" autocomplete="off">
-                <div id="login-error" class="alert alert-danger py-2 small d-none"></div>
-
+            <form id="form-login" class="p-4">
+                <div id="login-error" class="alert alert-danger py-2 small d-none">Username atau password salah.</div>
                 <label class="form-label small fw-semibold">Username / Email</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                    <input type="text" id="username" class="form-control" placeholder="Masukkan username atau email" required>
-                </div>
-
+                <input type="text" id="username" class="form-control mb-3" required>
                 <label class="form-label small fw-semibold">Password</label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
-                    <input type="password" id="password" class="form-control" placeholder="Masukkan password" required>
-                </div>
-
-                <button type="submit" class="btn btn-navy w-100 py-2 fw-semibold">
-                    <i class="bi bi-box-arrow-in-right me-1"></i> Masuk ke Sistem
-                </button>
-
+                <input type="password" id="password" class="form-control mb-3" required>
+                <button type="submit" class="btn btn-navy w-100 fw-semibold">Masuk</button>
                 <p class="small text-muted text-center mt-3 mb-0">
-                    Akun contoh (password: <b>123456</b>):<br>
-                    <b>admin</b> · <b>budi</b> (guru) · <b>andi</b> (siswa) · <b>dika</b> (alumni)
+                    Contoh: admin, budi (guru), andi (siswa), dika (alumni)<br>Password: 123456
                 </p>
             </form>
         </div>
     </section>
 
-    <!-- ========== INTERFACE UTAMA ========== -->
+    <!-- ===== INTERFACE UTAMA ===== -->
     <div id="app">
         <aside id="sidebar">
-            <div class="brand d-flex align-items-center gap-2">
-                <i class="bi bi-building-check fs-4 text-info"></i>
-                <div>
-                    <div class="fw-bold small">SIM-PKL SMK</div>
-                    <span class="badge bg-info text-dark" id="badge-role"></span>
-                </div>
+            <div class="brand">
+                <div class="fw-bold">SIM-PKL SMK</div>
+                <span class="badge bg-info text-dark" id="role-badge"></span>
             </div>
             <nav class="mt-3" id="menu"></nav>
         </aside>
 
         <div id="main">
-            <header class="topbar d-flex justify-content-between align-items-center sticky-top">
-                <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-light border" id="btn-menu" aria-label="Buka menu"><i class="bi bi-list fs-5"></i></button>
-                    <h6 class="mb-0 fw-bold" id="page-title"></h6>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <span class="small fw-semibold d-none d-md-inline"><i class="bi bi-person-circle text-primary me-1"></i><span id="nav-name"></span></span>
-                    <button class="btn btn-outline-danger btn-sm" id="btn-logout"><i class="bi bi-box-arrow-right me-1"></i>Logout</button>
-                </div>
+            <header class="topbar d-flex justify-content-between align-items-center">
+                <span class="fw-bold" id="nama-user"></span>
+                <button class="btn btn-outline-danger btn-sm" id="btn-logout">Logout</button>
             </header>
 
             <main class="p-4">
-                <div class="banner mb-4">
-                    <h5 class="fw-bold mb-1" id="banner-title"></h5>
-                    <p class="mb-0 small opacity-75" id="banner-sub"></p>
-                </div>
 
-                <!-- ===== TAMPILAN ADMIN ===== -->
+                <!-- Admin -->
                 <div class="view" data-role="admin">
-                    <div id="admin-dashboard" class="row g-3 mb-4">
-                        <div class="col-md-3 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center">
-                            <div><div class="text-muted small">Total Akun</div><h4 class="fw-bold mb-0">4</h4></div><div class="icon"><i class="bi bi-people"></i></div>
-                        </div></div>
-                        <div class="col-md-3 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center">
-                            <div><div class="text-muted small">Tempat PKL</div><h4 class="fw-bold mb-0">3</h4></div><div class="icon"><i class="bi bi-buildings"></i></div>
-                        </div></div>
-                        <div class="col-md-3 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center" style="border-left-color:#f59e0b">
-                            <div><div class="text-muted small">Pengajuan Menunggu</div><h4 class="fw-bold mb-0">1</h4></div><div class="icon text-warning"><i class="bi bi-hourglass-split"></i></div>
-                        </div></div>
-                        <div class="col-md-3 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center" style="border-left-color:#16a34a">
-                            <div><div class="text-muted small">Log Monitoring</div><h4 class="fw-bold mb-0">2</h4></div><div class="icon text-success"><i class="bi bi-journal-check"></i></div>
-                        </div></div>
+                    <div id="admin-1" class="row g-3 mb-4">
+                        <div class="col-4"><div class="box stat"><small class="text-muted">Total Akun</small><h4 class="fw-bold mb-0">4</h4></div></div>
+                        <div class="col-4"><div class="box stat"><small class="text-muted">Tempat PKL</small><h4 class="fw-bold mb-0">3</h4></div></div>
+                        <div class="col-4"><div class="box stat"><small class="text-muted">Pengajuan Menunggu</small><h4 class="fw-bold mb-0">1</h4></div></div>
                     </div>
-
-                    <section id="admin-akun" class="box p-4 mb-4">
-                        <h6 class="fw-bold mb-3">Manajemen Akun</h6>
-                        <div class="table-responsive"><table class="table table-hover align-middle mb-0">
-                            <thead><tr><th>Username</th><th>Nama</th><th>Role</th><th>Status</th></tr></thead>
+                    <div id="admin-2" class="box mb-4">
+                        <h6 class="fw-bold">Manajemen Tempat PKL</h6>
+                        <table class="table mb-0">
+                            <thead><tr><th>Perusahaan</th><th>Lokasi</th><th>Kuota</th></tr></thead>
                             <tbody>
-                                <tr><td>admin</td><td>Administrator Sekolah</td><td><span class="badge bg-primary">ADMIN</span></td><td><span class="badge bg-success">aktif</span></td></tr>
-                                <tr><td>budi</td><td>Budi Santoso, S.Kom.</td><td><span class="badge bg-primary">GURU</span></td><td><span class="badge bg-success">aktif</span></td></tr>
-                                <tr><td>andi</td><td>Andi Pratama</td><td><span class="badge bg-primary">SISWA</span></td><td><span class="badge bg-success">aktif</span></td></tr>
-                                <tr><td>dika</td><td>Dika Saputra</td><td><span class="badge bg-primary">ALUMNI</span></td><td><span class="badge bg-success">aktif</span></td></tr>
+                                <tr><td>PT. Maju Jaya Abadi</td><td>Kota Metro</td><td>10</td></tr>
+                                <tr><td>CV. Teknologi Mandiri</td><td>Kota Metro</td><td>6</td></tr>
                             </tbody>
-                        </table></div>
-                    </section>
-
-                    <section id="admin-tempat" class="box p-4 mb-4">
-                        <h6 class="fw-bold mb-3">Manajemen Tempat PKL</h6>
-                        <div class="table-responsive"><table class="table table-hover align-middle mb-0">
-                            <thead><tr><th>Perusahaan</th><th>Lokasi</th><th>Jurusan</th><th>Kuota</th></tr></thead>
+                        </table>
+                    </div>
+                    <div id="admin-3" class="box">
+                        <h6 class="fw-bold">Data Pengajuan PKL</h6>
+                        <table class="table mb-0">
+                            <thead><tr><th>Siswa</th><th>Tempat</th><th>Status</th></tr></thead>
                             <tbody>
-                                <tr><td class="fw-semibold">PT. Maju Jaya Abadi</td><td>Kota Metro</td><td>Rekayasa Perangkat Lunak</td><td>10</td></tr>
-                                <tr><td class="fw-semibold">CV. Teknologi Mandiri</td><td>Kota Metro</td><td>Teknik Komputer dan Jaringan</td><td>6</td></tr>
-                                <tr><td class="fw-semibold">Dinas Komunikasi dan Informatika</td><td>Bandar Lampung</td><td>Multimedia</td><td>8</td></tr>
+                                <tr><td>Andi Pratama</td><td>PT. Maju Jaya Abadi</td><td><span class="badge bg-success">Diterima</span></td></tr>
+                                <tr><td>Citra Lestari</td><td>CV. Teknologi Mandiri</td><td><span class="badge bg-warning text-dark">Menunggu</span></td></tr>
                             </tbody>
-                        </table></div>
-                    </section>
-
-                    <section id="admin-pengajuan" class="box p-4">
-                        <h6 class="fw-bold mb-3">Data Pengajuan PKL</h6>
-                        <div class="table-responsive"><table class="table table-hover align-middle mb-0">
-                            <thead><tr><th>Siswa</th><th>Tempat PKL</th><th>Tanggal</th><th>Status</th></tr></thead>
-                            <tbody>
-                                <tr><td>Andi Pratama</td><td>PT. Maju Jaya Abadi</td><td>2026-10-01</td><td><span class="badge bg-success">Diterima</span></td></tr>
-                                <tr><td>Citra Lestari</td><td>CV. Teknologi Mandiri</td><td>2026-11-10</td><td><span class="badge bg-warning text-dark">Menunggu</span></td></tr>
-                            </tbody>
-                        </table></div>
-                    </section>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- ===== TAMPILAN GURU ===== -->
+                <!-- Guru -->
                 <div class="view" data-role="guru">
-                    <div id="guru-dashboard" class="row g-3 mb-4">
-                        <div class="col-md-4 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center">
-                            <div><div class="text-muted small">Siswa Bimbingan</div><h4 class="fw-bold mb-0">2</h4></div><div class="icon"><i class="bi bi-people"></i></div>
-                        </div></div>
-                        <div class="col-md-4 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center" style="border-left-color:#f59e0b">
-                            <div><div class="text-muted small">Pengajuan Menunggu</div><h4 class="fw-bold mb-0">1</h4></div><div class="icon text-warning"><i class="bi bi-hourglass-split"></i></div>
-                        </div></div>
-                        <div class="col-md-4 col-12"><div class="box stat p-3 d-flex justify-content-between align-items-center" style="border-left-color:#16a34a">
-                            <div><div class="text-muted small">Laporan Perlu Diverifikasi</div><h4 class="fw-bold mb-0">1</h4></div><div class="icon text-success"><i class="bi bi-journal-check"></i></div>
-                        </div></div>
+                    <div id="guru-1" class="row g-3 mb-4">
+                        <div class="col-4"><div class="box stat"><small class="text-muted">Siswa Bimbingan</small><h4 class="fw-bold mb-0">2</h4></div></div>
+                        <div class="col-4"><div class="box stat"><small class="text-muted">Pengajuan Menunggu</small><h4 class="fw-bold mb-0">1</h4></div></div>
+                        <div class="col-4"><div class="box stat"><small class="text-muted">Laporan Perlu Dicek</small><h4 class="fw-bold mb-0">1</h4></div></div>
                     </div>
-
-                    <section id="guru-pengajuan" class="box p-4 mb-4">
-                        <h6 class="fw-bold mb-3">Pengajuan Siswa Bimbingan</h6>
-                        <div class="table-responsive"><table class="table table-hover align-middle mb-0">
-                            <thead><tr><th>Siswa</th><th>Tempat PKL</th><th>Status</th><th>Keputusan</th></tr></thead>
+                    <div id="guru-2" class="box mb-4">
+                        <h6 class="fw-bold">Pengajuan Siswa Bimbingan</h6>
+                        <table class="table mb-0">
+                            <thead><tr><th>Siswa</th><th>Tempat</th><th>Aksi</th></tr></thead>
                             <tbody>
-                                <tr><td>Andi Pratama</td><td>PT. Maju Jaya Abadi</td><td><span class="badge bg-success">Diterima</span></td><td>-</td></tr>
-                                <tr><td>Citra Lestari</td><td>CV. Teknologi Mandiri</td><td><span class="badge bg-warning text-dark">Menunggu</span></td>
-                                    <td><button class="btn btn-sm btn-success">Terima</button> <button class="btn btn-sm btn-danger">Tolak</button></td></tr>
+                                <tr><td>Citra Lestari</td><td>CV. Teknologi Mandiri</td><td><button class="btn btn-sm btn-success">Terima</button> <button class="btn btn-sm btn-danger">Tolak</button></td></tr>
                             </tbody>
-                        </table></div>
-                    </section>
-
-                    <section id="guru-monitoring" class="box p-4">
-                        <h6 class="fw-bold mb-3">Verifikasi Monitoring &amp; Penilaian</h6>
-                        <div class="table-responsive"><table class="table table-hover align-middle mb-0">
-                            <thead><tr><th>Siswa</th><th>Tanggal</th><th>Kegiatan</th><th>Status</th><th>Aksi</th></tr></thead>
+                        </table>
+                    </div>
+                    <div id="guru-3" class="box">
+                        <h6 class="fw-bold">Verifikasi Monitoring</h6>
+                        <table class="table mb-0">
+                            <thead><tr><th>Siswa</th><th>Kegiatan</th><th>Aksi</th></tr></thead>
                             <tbody>
-                                <tr><td>Andi Pratama</td><td>2026-11-05</td><td>Setup Environment &amp; Pengenalan Database</td><td><span class="badge bg-success">Disetujui</span></td><td>-</td></tr>
-                                <tr><td>Andi Pratama</td><td>2026-11-12</td><td>Membuat Modul CRUD Data Pelanggan</td><td><span class="badge bg-warning text-dark">Menunggu</span></td><td><button class="btn btn-sm btn-success">Setujui</button></td></tr>
+                                <tr><td>Andi Pratama</td><td>Membuat Modul CRUD Data Pelanggan</td><td><button class="btn btn-sm btn-success">Setujui</button></td></tr>
                             </tbody>
-                        </table></div>
-                        <p class="small text-muted mt-3 mb-0">Nilai akhir dihitung terbobot: Disiplin 20%, Tanggung Jawab 20%, Keterampilan 30%, Kerja Sama 15%, Sikap 15%.</p>
-                    </section>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- ===== TAMPILAN SISWA ===== -->
+                <!-- Siswa -->
                 <div class="view" data-role="siswa">
-                    <div id="siswa-dashboard" class="row g-3 mb-4">
-                        <div class="col-md-3 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center">
-                            <div><div class="text-muted small">Tempat PKL</div><h4 class="fw-bold mb-0">3</h4></div><div class="icon"><i class="bi bi-building"></i></div>
-                        </div></div>
-                        <div class="col-md-3 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center" style="border-left-color:#16a34a">
-                            <div><div class="text-muted small">Status PKL</div><h6 class="fw-bold text-success mb-0">Diterima</h6></div><div class="icon text-success"><i class="bi bi-check-circle"></i></div>
-                        </div></div>
-                        <div class="col-md-3 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center" style="border-left-color:#2563eb">
-                            <div><div class="text-muted small">Laporan Monitoring</div><h4 class="fw-bold mb-0">2</h4></div><div class="icon text-primary"><i class="bi bi-journal-check"></i></div>
-                        </div></div>
-                        <div class="col-md-3 col-6"><div class="box stat p-3 d-flex justify-content-between align-items-center" style="border-left-color:#f59e0b">
-                            <div><div class="text-muted small">Nilai Akhir</div><h4 class="fw-bold mb-0">90.25</h4></div><div class="icon text-warning"><i class="bi bi-award"></i></div>
-                        </div></div>
+                    <div id="siswa-1" class="row g-3 mb-4">
+                        <div class="col-4"><div class="box stat"><small class="text-muted">Status PKL</small><h5 class="fw-bold text-success mb-0">Diterima</h5></div></div>
+                        <div class="col-4"><div class="box stat"><small class="text-muted">Laporan Monitoring</small><h4 class="fw-bold mb-0">2</h4></div></div>
+                        <div class="col-4"><div class="box stat"><small class="text-muted">Nilai Akhir</small><h4 class="fw-bold mb-0">90.25</h4></div></div>
                     </div>
-
-                    <section id="siswa-tempat" class="box p-4 mb-4">
-                        <h6 class="fw-bold mb-3">Daftar Tempat PKL</h6>
-                        <div class="row g-3">
-                            <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body">
-                                <div class="d-flex justify-content-between mb-2"><span class="badge bg-primary-subtle text-primary">RPL</span><span class="text-warning fw-bold small"><i class="bi bi-star-fill"></i> 4.8</span></div>
-                                <h6 class="fw-bold">PT. Maju Jaya Abadi</h6>
-                                <p class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Kota Metro</p>
-                                <span class="small fw-semibold text-success">Kuota: 10</span>
-                            </div></div></div>
-                            <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body">
-                                <div class="d-flex justify-content-between mb-2"><span class="badge bg-primary-subtle text-primary">TKJ</span><span class="text-warning fw-bold small"><i class="bi bi-star-fill"></i> 4.5</span></div>
-                                <h6 class="fw-bold">CV. Teknologi Mandiri</h6>
-                                <p class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Kota Metro</p>
-                                <span class="small fw-semibold text-success">Kuota: 6</span>
-                            </div></div></div>
-                            <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body">
-                                <div class="d-flex justify-content-between mb-2"><span class="badge bg-primary-subtle text-primary">Multimedia</span><span class="text-warning fw-bold small"><i class="bi bi-star-fill"></i> 4.7</span></div>
-                                <h6 class="fw-bold">Dinas Komunikasi dan Informatika</h6>
-                                <p class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Bandar Lampung</p>
-                                <span class="small fw-semibold text-success">Kuota: 8</span>
-                            </div></div></div>
-                        </div>
-                    </section>
-
-                    <section id="siswa-pengajuan" class="box p-4 mb-4">
-                        <h6 class="fw-bold mb-3">Status Pengajuan PKL</h6>
-                        <div class="table-responsive"><table class="table table-hover align-middle mb-0">
-                            <thead><tr><th>Tempat PKL</th><th>Tanggal Ajukan</th><th>Status</th></tr></thead>
-                            <tbody><tr><td class="fw-semibold">PT. Maju Jaya Abadi</td><td>2026-10-01</td><td><span class="badge bg-success">Diterima</span></td></tr></tbody>
-                        </table></div>
-                    </section>
-
-                    <section id="siswa-monitoring" class="box p-4 mb-4">
-                        <h6 class="fw-bold mb-3">Monitoring Kegiatan PKL</h6>
-                        <div class="table-responsive"><table class="table table-hover align-middle mb-0">
+                    <div id="siswa-2" class="box mb-4">
+                        <h6 class="fw-bold">Tempat PKL Tersedia</h6>
+                        <table class="table mb-0">
+                            <thead><tr><th>Perusahaan</th><th>Jurusan</th><th>Rating</th></tr></thead>
+                            <tbody>
+                                <tr><td>PT. Maju Jaya Abadi</td><td>RPL</td><td>4.8</td></tr>
+                                <tr><td>CV. Teknologi Mandiri</td><td>TKJ</td><td>4.5</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="siswa-3" class="box">
+                        <h6 class="fw-bold">Monitoring Kegiatan PKL</h6>
+                        <table class="table mb-0">
                             <thead><tr><th>Tanggal</th><th>Kegiatan</th><th>Status</th></tr></thead>
                             <tbody>
                                 <tr><td>2026-11-05</td><td>Setup Environment &amp; Pengenalan Database</td><td><span class="badge bg-success">Disetujui</span></td></tr>
-                                <tr><td>2026-11-12</td><td>Membuat Modul CRUD Data Pelanggan</td><td><span class="badge bg-warning text-dark">Menunggu Verifikasi</span></td></tr>
+                                <tr><td>2026-11-12</td><td>Membuat Modul CRUD Data Pelanggan</td><td><span class="badge bg-warning text-dark">Menunggu</span></td></tr>
                             </tbody>
-                        </table></div>
-                    </section>
-
-                    <section id="siswa-nilai" class="box p-4">
-                        <h6 class="fw-bold mb-3">Hasil Penilaian PKL</h6>
-                        <div class="table-responsive"><table class="table table-bordered mb-0">
-                            <tr><th class="bg-light w-50">Kedisiplinan (20%)</th><td>90</td></tr>
-                            <tr><th class="bg-light">Tanggung Jawab (20%)</th><td>88</td></tr>
-                            <tr><th class="bg-light">Keterampilan Kerja (30%)</th><td>92</td></tr>
-                            <tr><th class="bg-light">Kerja Sama (15%)</th><td>89</td></tr>
-                            <tr><th class="bg-light">Sikap &amp; Etika (15%)</th><td>91</td></tr>
-                            <tr><th class="bg-light">Nilai Akhir (Terbobot)</th><td class="fw-bold text-primary fs-5">90.25</td></tr>
-                        </table></div>
-                    </section>
-                </div>
-
-                <!-- ===== TAMPILAN ALUMNI ===== -->
-                <div class="view" data-role="alumni">
-                    <div id="alumni-dashboard" class="row g-3 mb-4">
-                        <div class="col-md-6"><div class="box stat p-3 d-flex justify-content-between align-items-center">
-                            <div><div class="text-muted small">Pengalaman Dibagikan</div><h4 class="fw-bold mb-0">1</h4></div><div class="icon"><i class="bi bi-lightbulb"></i></div>
-                        </div></div>
-                        <div class="col-md-6"><div class="box stat p-3 d-flex justify-content-between align-items-center" style="border-left-color:#f59e0b">
-                            <div><div class="text-muted small">Ulasan &amp; Rating Diberikan</div><h4 class="fw-bold mb-0">1</h4></div><div class="icon text-warning"><i class="bi bi-star-fill"></i></div>
-                        </div></div>
+                        </table>
                     </div>
-
-                    <section id="alumni-tempat" class="box p-4 mb-4">
-                        <h6 class="fw-bold mb-3">Informasi Tempat PKL</h6>
-                        <div class="table-responsive"><table class="table table-hover align-middle mb-0">
-                            <thead><tr><th>Perusahaan</th><th>Lokasi</th><th>Jurusan</th><th>Rating</th></tr></thead>
-                            <tbody>
-                                <tr><td class="fw-semibold">PT. Maju Jaya Abadi</td><td>Kota Metro</td><td>RPL</td><td class="text-warning"><i class="bi bi-star-fill"></i> 4.8</td></tr>
-                                <tr><td class="fw-semibold">CV. Teknologi Mandiri</td><td>Kota Metro</td><td>TKJ</td><td class="text-warning"><i class="bi bi-star-fill"></i> 4.5</td></tr>
-                                <tr><td class="fw-semibold">Dinas Komunikasi dan Informatika</td><td>Bandar Lampung</td><td>Multimedia</td><td class="text-warning"><i class="bi bi-star-fill"></i> 4.7</td></tr>
-                            </tbody>
-                        </table></div>
-                    </section>
-
-                    <section id="alumni-pengalaman" class="box p-4 mb-4">
-                        <h6 class="fw-bold mb-3">Pengalaman PKL</h6>
-                        <div class="p-3 bg-light rounded border-start border-4 border-primary">
-                            <div class="d-flex justify-content-between"><strong class="text-primary">Pengalaman Seru Belajar Web Development</strong><span class="badge bg-secondary">PT. Maju Jaya Abadi</span></div>
-                            <p class="small mt-2 mb-1"><b>Kegiatan:</b> Membuat fitur sistem informasi klien dan mengikuti rapat evaluasi mingguan.</p>
-                            <p class="small mb-1"><b>Kendala:</b> Awalnya kesulitan memahami query SQL join antar tabel.</p>
-                            <p class="small mb-0 text-success"><b>Tips:</b> Jangan malu bertanya dan selalu datang 15 menit lebih awal.</p>
-                        </div>
-                    </section>
-
-                    <section id="alumni-ulasan" class="box p-4">
-                        <h6 class="fw-bold mb-3">Ulasan &amp; Rating</h6>
-                        <div class="d-flex justify-content-between"><strong>PT. Maju Jaya Abadi</strong><span class="text-warning">★★★★★</span></div>
-                        <small class="text-muted">Dika Saputra • 2026-09-15</small>
-                        <p class="small mt-1 mb-0">Mentor sangat ramah dan membimbing dari nol. Lingkungan kerja nyaman.</p>
-                    </section>
                 </div>
+
+                <!-- Alumni -->
+                <div class="view" data-role="alumni">
+                    <div id="alumni-1" class="row g-3 mb-4">
+                        <div class="col-6"><div class="box stat"><small class="text-muted">Pengalaman Dibagikan</small><h4 class="fw-bold mb-0">1</h4></div></div>
+                        <div class="col-6"><div class="box stat"><small class="text-muted">Ulasan Diberikan</small><h4 class="fw-bold mb-0">1</h4></div></div>
+                    </div>
+                    <div id="alumni-2" class="box mb-4">
+                        <h6 class="fw-bold">Pengalaman PKL</h6>
+                        <strong class="text-primary">Pengalaman Seru Belajar Web Development</strong>
+                        <p class="small mb-0">Tips: Jangan malu bertanya dan selalu datang 15 menit lebih awal.</p>
+                    </div>
+                    <div id="alumni-3" class="box">
+                        <h6 class="fw-bold">Ulasan &amp; Rating</h6>
+                        <strong>PT. Maju Jaya Abadi</strong> <span class="text-warning">★★★★★</span>
+                        <p class="small mb-0">Mentor sangat ramah dan membimbing dari nol.</p>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
 
     <script>
-        // Akun contoh (role dibaca dari akun, bukan dipilih di form)
+        // Akun contoh: role dibaca dari akun
         const akun = [
-            { username: 'admin', email: 'admin@smk.sch.id', password: '123456', role: 'admin', nama: 'Administrator Sekolah', info: 'Pengelola sistem PKL' },
-            { username: 'budi',  email: 'guru@smk.sch.id',  password: '123456', role: 'guru',  nama: 'Budi Santoso, S.Kom.', info: 'NIP: 198504122010011005 | Guru Pembimbing RPL' },
-            { username: 'andi',  email: 'andi@siswa.smk.sch.id', password: '123456', role: 'siswa', nama: 'Andi Pratama', info: 'NISN: 2513025008 | Jurusan: Rekayasa Perangkat Lunak' },
-            { username: 'dika',  email: 'dika@alumni.smk.sch.id', password: '123456', role: 'alumni', nama: 'Dika Saputra', info: 'NISN: 2413025042 | Alumni Rekayasa Perangkat Lunak' }
+            { username: 'admin', email: 'admin@smk.sch.id',       role: 'admin',  nama: 'Administrator Sekolah' },
+            { username: 'budi',  email: 'guru@smk.sch.id',        role: 'guru',   nama: 'Budi Santoso, S.Kom.' },
+            { username: 'andi',  email: 'andi@siswa.smk.sch.id',  role: 'siswa',  nama: 'Andi Pratama' },
+            { username: 'dika',  email: 'dika@alumni.smk.sch.id', role: 'alumni', nama: 'Dika Saputra' }
         ];
 
-        // Menu tiap role (target = id bagian di halaman)
+        // Tiga menu tiap role (mengarah ke bagian halaman)
         const menu = {
-            admin: [
-                ['Dashboard Admin', 'bi-speedometer2', 'admin-dashboard'],
-                ['Manajemen Akun', 'bi-people-fill', 'admin-akun'],
-                ['Manajemen Tempat PKL', 'bi-buildings', 'admin-tempat'],
-                ['Data Pengajuan', 'bi-inboxes', 'admin-pengajuan']
-            ],
-            guru: [
-                ['Dashboard Guru', 'bi-speedometer2', 'guru-dashboard'],
-                ['Pengajuan Siswa', 'bi-inboxes', 'guru-pengajuan'],
-                ['Verifikasi & Penilaian', 'bi-journal-check', 'guru-monitoring']
-            ],
-            siswa: [
-                ['Dashboard Siswa', 'bi-speedometer2', 'siswa-dashboard'],
-                ['Cari Tempat PKL', 'bi-building', 'siswa-tempat'],
-                ['Status Pengajuan', 'bi-clipboard-check', 'siswa-pengajuan'],
-                ['Monitoring PKL', 'bi-journal-text', 'siswa-monitoring'],
-                ['Hasil Penilaian', 'bi-award', 'siswa-nilai']
-            ],
-            alumni: [
-                ['Dashboard Alumni', 'bi-speedometer2', 'alumni-dashboard'],
-                ['Informasi Tempat PKL', 'bi-building', 'alumni-tempat'],
-                ['Pengalaman PKL', 'bi-lightbulb', 'alumni-pengalaman'],
-                ['Ulasan & Rating', 'bi-star-half', 'alumni-ulasan']
-            ]
+            admin:  ['Dashboard', 'Tempat PKL', 'Pengajuan'],
+            guru:   ['Dashboard', 'Pengajuan Siswa', 'Verifikasi Monitoring'],
+            siswa:  ['Dashboard', 'Tempat PKL', 'Monitoring'],
+            alumni: ['Dashboard', 'Pengalaman', 'Ulasan']
         };
 
         const loginPage = document.getElementById('login-page');
         const app = document.getElementById('app');
-        const errorBox = document.getElementById('login-error');
 
-        // Login
         document.getElementById('form-login').addEventListener('submit', function (e) {
             e.preventDefault();
             const user = document.getElementById('username').value.trim().toLowerCase();
             const pass = document.getElementById('password').value;
-            const pengguna = akun.find(a => a.username === user || a.email === user);
+            const p = akun.find(a => a.username === user || a.email === user);
 
-            if (!pengguna || pengguna.password !== pass) {
-                errorBox.textContent = 'Username/email atau password salah. Periksa lagi data Anda.';
-                errorBox.classList.remove('d-none');
+            if (!p || pass !== '123456') {
+                document.getElementById('login-error').classList.remove('d-none');
                 return;
             }
-            errorBox.classList.add('d-none');
-            tampilkanApp(pengguna);
-        });
+            document.getElementById('login-error').classList.add('d-none');
 
-        // Tampilkan interface sesuai role
-        function tampilkanApp(p) {
-            document.getElementById('badge-role').textContent = p.role.toUpperCase();
-            document.getElementById('nav-name').textContent = p.nama;
-            document.getElementById('page-title').textContent = menu[p.role][0][0];
-            document.getElementById('banner-title').textContent = 'Selamat Datang, ' + p.nama + '!';
-            document.getElementById('banner-sub').textContent = p.info;
-
-            document.getElementById('menu').innerHTML = menu[p.role].map(function (m, i) {
-                return '<a href="#' + m[2] + '" class="menu-link' + (i === 0 ? ' active' : '') + '"><i class="bi ' + m[1] + '"></i> ' + m[0] + '</a>';
+            document.getElementById('role-badge').textContent = p.role.toUpperCase();
+            document.getElementById('nama-user').textContent = p.nama;
+            document.getElementById('menu').innerHTML = menu[p.role].map(function (nama, i) {
+                return '<a class="menu-link" href="#' + p.role + '-' + (i + 1) + '">' + nama + '</a>';
             }).join('');
-
             document.querySelectorAll('.view').forEach(function (v) {
                 v.style.display = v.dataset.role === p.role ? 'block' : 'none';
             });
@@ -406,34 +237,12 @@
             loginPage.style.display = 'none';
             app.style.display = 'block';
             window.scrollTo(0, 0);
-        }
-
-        // Menu aktif + judul halaman
-        document.getElementById('menu').addEventListener('click', function (e) {
-            const link = e.target.closest('.menu-link');
-            if (!link) return;
-            document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-            document.getElementById('page-title').textContent = link.textContent.trim();
-            document.getElementById('sidebar').classList.remove('show-menu');
         });
 
-        // Logout
         document.getElementById('btn-logout').addEventListener('click', function () {
             app.style.display = 'none';
             loginPage.style.display = 'flex';
             document.getElementById('form-login').reset();
-        });
-
-        // Buka/tutup sidebar
-        document.getElementById('btn-menu').addEventListener('click', function () {
-            const sidebar = document.getElementById('sidebar');
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('show-menu');
-            } else {
-                sidebar.classList.toggle('hidden-menu');
-                document.getElementById('main').classList.toggle('full');
-            }
         });
     </script>
 </body>
