@@ -9,47 +9,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        :root { --navy: #0f2942; --navy-dark: #091a2c; --navy-light: #1e4268; }
-
-        html { scroll-behavior: smooth; }
+        :root { --navy: #0f2942; --navy-dark: #091a2c; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f7fb; }
+        
+        /* Warna kustom Navy */
+        .bg-navy { background-color: var(--navy); }
+        .bg-navy-dark { background-color: var(--navy-dark); }
+        .btn-navy { background: var(--navy); color: #fff; }
+        .btn-navy:hover { background: #1e4268; color: #fff; }
 
-        .btn-navy { background: var(--navy); color: #fff; border: none; }
-        .btn-navy:hover { background: var(--navy-light); color: #fff; }
-
-        /* Login */
-        #login-page {
-            min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
-            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
-        }
-        .login-card { background: #fff; border-radius: 16px; max-width: 420px; width: 100%; overflow: hidden; }
-        .login-header { background: var(--navy); color: #fff; padding: 28px; text-align: center; }
-
-        /* Interface utama */
-        #app { display: none; }
-        #sidebar { width: 240px; background: var(--navy); color: #fff; position: fixed; top: 0; bottom: 0; left: 0; }
-        .brand { padding: 20px; background: var(--navy-dark); }
+        /* Login & Sidebar */
+        #login-page { background: linear-gradient(135deg, var(--navy-dark), #1e4268); }
+        #sidebar { width: 240px; }
         .menu-link { display: block; padding: 12px 20px; color: rgba(255,255,255,.8); text-decoration: none; border-left: 4px solid transparent; }
         .menu-link:hover { background: rgba(255,255,255,.1); color: #fff; border-left-color: #60a5fa; }
-        #main { margin-left: 240px; }
-        .topbar { background: #fff; padding: 14px 24px; box-shadow: 0 2px 10px rgba(15,41,66,.06); }
-        .box { background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(15,41,66,.05); padding: 20px; }
-        .stat { border-left: 4px solid var(--navy); }
         .table thead th { background: var(--navy); color: #fff; font-weight: 500; }
-        .view { display: none; }
 
-        @media (max-width: 768px) {
-            #sidebar { position: static; width: 100%; }
-            #main { margin-left: 0; }
-        }
+        /* Kontrol Tampilan Role via CSS (Menggantikan loop JS) */
+        .view { display: none; }
+        body[data-role="admin"] .view[data-role="admin"],
+        body[data-role="guru"] .view[data-role="guru"],
+        body[data-role="siswa"] .view[data-role="siswa"],
+        body[data-role="alumni"] .view[data-role="alumni"] { display: block; }
+
+        @media (max-width: 768px) { #sidebar { width: 100%; } }
     </style>
 </head>
 <body>
 
     <!-- ===== HALAMAN LOGIN ===== -->
-    <section id="login-page">
-        <div class="login-card shadow-lg">
-            <div class="login-header">
+    <section id="login-page" class="min-vh-100 d-flex align-items-center justify-content-center p-3">
+        <div class="bg-white rounded-4 shadow-lg overflow-hidden w-100" style="max-width: 420px;">
+            <div class="bg-navy text-white p-4 text-center">
                 <i class="bi bi-mortarboard-fill fs-1"></i>
                 <h5 class="fw-bold mb-1">SIM-PKL SMK</h5>
                 <small class="text-white-50">Pemilihan &amp; Monitoring Tempat PKL</small>
@@ -69,31 +60,30 @@
     </section>
 
     <!-- ===== INTERFACE UTAMA ===== -->
-    <div id="app">
-        <aside id="sidebar">
-            <div class="brand">
+    <div id="app" class="d-none flex-column flex-md-row min-vh-100">
+        <aside id="sidebar" class="bg-navy text-white flex-shrink-0">
+            <div class="p-3 bg-navy-dark">
                 <div class="fw-bold">SIM-PKL SMK</div>
                 <span class="badge bg-info text-dark" id="role-badge"></span>
             </div>
-            <nav class="mt-3" id="menu"></nav>
+            <nav class="mt-2" id="menu"></nav>
         </aside>
 
-        <div id="main">
-            <header class="topbar d-flex justify-content-between align-items-center">
+        <div class="flex-grow-1">
+            <header class="bg-white py-3 px-4 shadow-sm d-flex justify-content-between align-items-center">
                 <span class="fw-bold" id="nama-user"></span>
                 <button class="btn btn-outline-danger btn-sm" id="btn-logout">Logout</button>
             </header>
 
             <main class="p-4">
-
                 <!-- Admin -->
                 <div class="view" data-role="admin">
                     <div id="admin-1" class="row g-3 mb-4">
-                        <div class="col-4"><div class="box stat"><small class="text-muted">Total Akun</small><h4 class="fw-bold mb-0">4</h4></div></div>
-                        <div class="col-4"><div class="box stat"><small class="text-muted">Tempat PKL</small><h4 class="fw-bold mb-0">3</h4></div></div>
-                        <div class="col-4"><div class="box stat"><small class="text-muted">Pengajuan Menunggu</small><h4 class="fw-bold mb-0">1</h4></div></div>
+                        <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Total Akun</small><h4 class="fw-bold mb-0">4</h4></div></div>
+                        <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Tempat PKL</small><h4 class="fw-bold mb-0">3</h4></div></div>
+                        <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Pengajuan Menunggu</small><h4 class="fw-bold mb-0">1</h4></div></div>
                     </div>
-                    <div id="admin-2" class="box mb-4">
+                    <div id="admin-2" class="bg-white rounded-3 shadow-sm p-3 mb-4">
                         <h6 class="fw-bold">Manajemen Tempat PKL</h6>
                         <table class="table mb-0">
                             <thead><tr><th>Perusahaan</th><th>Lokasi</th><th>Kuota</th></tr></thead>
@@ -103,7 +93,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="admin-3" class="box">
+                    <div id="admin-3" class="bg-white rounded-3 shadow-sm p-3">
                         <h6 class="fw-bold">Data Pengajuan PKL</h6>
                         <table class="table mb-0">
                             <thead><tr><th>Siswa</th><th>Tempat</th><th>Status</th></tr></thead>
@@ -118,11 +108,11 @@
                 <!-- Guru -->
                 <div class="view" data-role="guru">
                     <div id="guru-1" class="row g-3 mb-4">
-                        <div class="col-4"><div class="box stat"><small class="text-muted">Siswa Bimbingan</small><h4 class="fw-bold mb-0">2</h4></div></div>
-                        <div class="col-4"><div class="box stat"><small class="text-muted">Pengajuan Menunggu</small><h4 class="fw-bold mb-0">1</h4></div></div>
-                        <div class="col-4"><div class="box stat"><small class="text-muted">Laporan Perlu Dicek</small><h4 class="fw-bold mb-0">1</h4></div></div>
+                        <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Siswa Bimbingan</small><h4 class="fw-bold mb-0">2</h4></div></div>
+                        <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Pengajuan Menunggu</small><h4 class="fw-bold mb-0">1</h4></div></div>
+                        <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Laporan Perlu Dicek</small><h4 class="fw-bold mb-0">1</h4></div></div>
                     </div>
-                    <div id="guru-2" class="box mb-4">
+                    <div id="guru-2" class="bg-white rounded-3 shadow-sm p-3 mb-4">
                         <h6 class="fw-bold">Pengajuan Siswa Bimbingan</h6>
                         <table class="table mb-0">
                             <thead><tr><th>Siswa</th><th>Tempat</th><th>Aksi</th></tr></thead>
@@ -131,7 +121,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="guru-3" class="box">
+                    <div id="guru-3" class="bg-white rounded-3 shadow-sm p-3">
                         <h6 class="fw-bold">Verifikasi Monitoring</h6>
                         <table class="table mb-0">
                             <thead><tr><th>Siswa</th><th>Kegiatan</th><th>Aksi</th></tr></thead>
@@ -145,11 +135,11 @@
                 <!-- Siswa -->
                 <div class="view" data-role="siswa">
                     <div id="siswa-1" class="row g-3 mb-4">
-                        <div class="col-4"><div class="box stat"><small class="text-muted">Status PKL</small><h5 class="fw-bold text-success mb-0">Diterima</h5></div></div>
-                        <div class="col-4"><div class="box stat"><small class="text-muted">Laporan Monitoring</small><h4 class="fw-bold mb-0">2</h4></div></div>
-                        <div class="col-4"><div class="box stat"><small class="text-muted">Nilai Akhir</small><h4 class="fw-bold mb-0">90.25</h4></div></div>
+                        <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Status PKL</small><h5 class="fw-bold text-success mb-0">Diterima</h5></div></div>
+                        <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Laporan Monitoring</small><h4 class="fw-bold mb-0">2</h4></div></div>
+                        <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Nilai Akhir</small><h4 class="fw-bold mb-0">90.25</h4></div></div>
                     </div>
-                    <div id="siswa-2" class="box mb-4">
+                    <div id="siswa-2" class="bg-white rounded-3 shadow-sm p-3 mb-4">
                         <h6 class="fw-bold">Tempat PKL Tersedia</h6>
                         <table class="table mb-0">
                             <thead><tr><th>Perusahaan</th><th>Jurusan</th><th>Rating</th></tr></thead>
@@ -159,7 +149,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="siswa-3" class="box">
+                    <div id="siswa-3" class="bg-white rounded-3 shadow-sm p-3">
                         <h6 class="fw-bold">Monitoring Kegiatan PKL</h6>
                         <table class="table mb-0">
                             <thead><tr><th>Tanggal</th><th>Kegiatan</th><th>Status</th></tr></thead>
@@ -174,76 +164,70 @@
                 <!-- Alumni -->
                 <div class="view" data-role="alumni">
                     <div id="alumni-1" class="row g-3 mb-4">
-                        <div class="col-6"><div class="box stat"><small class="text-muted">Pengalaman Dibagikan</small><h4 class="fw-bold mb-0">1</h4></div></div>
-                        <div class="col-6"><div class="box stat"><small class="text-muted">Ulasan Diberikan</small><h4 class="fw-bold mb-0">1</h4></div></div>
+                        <div class="col-6"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Pengalaman Dibagikan</small><h4 class="fw-bold mb-0">1</h4></div></div>
+                        <div class="col-6"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Ulasan Diberikan</small><h4 class="fw-bold mb-0">1</h4></div></div>
                     </div>
-                    <div id="alumni-2" class="box mb-4">
+                    <div id="alumni-2" class="bg-white rounded-3 shadow-sm p-3 mb-4">
                         <h6 class="fw-bold">Pengalaman PKL</h6>
                         <strong class="text-primary">Pengalaman Seru Belajar Web Development</strong>
                         <p class="small mb-0">Tips: Jangan malu bertanya dan selalu datang 15 menit lebih awal.</p>
                     </div>
-                    <div id="alumni-3" class="box">
+                    <div id="alumni-3" class="bg-white rounded-3 shadow-sm p-3">
                         <h6 class="fw-bold">Ulasan &amp; Rating</h6>
                         <strong>PT. Maju Jaya Abadi</strong> <span class="text-warning">★★★★★</span>
                         <p class="small mb-0">Mentor sangat ramah dan membimbing dari nol.</p>
                     </div>
                 </div>
-
             </main>
         </div>
     </div>
 
     <script>
-        // Akun contoh: role dibaca dari akun
         const akun = [
-            { username: 'admin', email: 'admin@smk.sch.id',       role: 'admin',  nama: 'Administrator Sekolah' },
-            { username: 'budi',  email: 'guru@smk.sch.id',        role: 'guru',   nama: 'Budi Santoso, S.Kom.' },
-            { username: 'andi',  email: 'andi@siswa.smk.sch.id',  role: 'siswa',  nama: 'Andi Pratama' },
-            { username: 'dika',  email: 'dika@alumni.smk.sch.id', role: 'alumni', nama: 'Dika Saputra' }
+            { user: 'admin', email: 'admin@smk.sch.id', role: 'admin', nama: 'Administrator Sekolah' },
+            { user: 'budi', email: 'guru@smk.sch.id', role: 'guru', nama: 'Budi Santoso, S.Kom.' },
+            { user: 'andi', email: 'andi@siswa.smk.sch.id', role: 'siswa', nama: 'Andi Pratama' },
+            { user: 'dika', email: 'dika@alumni.smk.sch.id', role: 'alumni', nama: 'Dika Saputra' }
         ];
 
-        // Tiga menu tiap role (mengarah ke bagian halaman)
         const menu = {
-            admin:  ['Dashboard', 'Tempat PKL', 'Pengajuan'],
-            guru:   ['Dashboard', 'Pengajuan Siswa', 'Verifikasi Monitoring'],
-            siswa:  ['Dashboard', 'Tempat PKL', 'Monitoring'],
+            admin: ['Dashboard', 'Tempat PKL', 'Pengajuan'],
+            guru: ['Dashboard', 'Pengajuan Siswa', 'Verifikasi Monitoring'],
+            siswa: ['Dashboard', 'Tempat PKL', 'Monitoring'],
             alumni: ['Dashboard', 'Pengalaman', 'Ulasan']
         };
 
-        const loginPage = document.getElementById('login-page');
-        const app = document.getElementById('app');
+        const toggleView = (isLoggedIn) => {
+            document.getElementById('login-page').classList.toggle('d-none', isLoggedIn);
+            document.getElementById('login-page').classList.toggle('d-flex', !isLoggedIn);
+            document.getElementById('app').classList.toggle('d-none', !isLoggedIn);
+            document.getElementById('app').classList.toggle('d-flex', isLoggedIn);
+        };
 
-        document.getElementById('form-login').addEventListener('submit', function (e) {
+        document.getElementById('form-login').onsubmit = (e) => {
             e.preventDefault();
-            const user = document.getElementById('username').value.trim().toLowerCase();
-            const pass = document.getElementById('password').value;
-            const p = akun.find(a => a.username === user || a.email === user);
+            const val = document.getElementById('username').value.trim().toLowerCase();
+            const p = akun.find(a => a.user === val || a.email === val);
 
-            if (!p || pass !== '123456') {
-                document.getElementById('login-error').classList.remove('d-none');
-                return;
+            if (!p || document.getElementById('password').value !== '123456') {
+                return document.getElementById('login-error').classList.remove('d-none');
             }
-            document.getElementById('login-error').classList.add('d-none');
 
+            document.getElementById('login-error').classList.add('d-none');
+            document.body.dataset.role = p.role;
             document.getElementById('role-badge').textContent = p.role.toUpperCase();
             document.getElementById('nama-user').textContent = p.nama;
-            document.getElementById('menu').innerHTML = menu[p.role].map(function (nama, i) {
-                return '<a class="menu-link" href="#' + p.role + '-' + (i + 1) + '">' + nama + '</a>';
-            }).join('');
-            document.querySelectorAll('.view').forEach(function (v) {
-                v.style.display = v.dataset.role === p.role ? 'block' : 'none';
-            });
+            document.getElementById('menu').innerHTML = menu[p.role]
+                .map((m, i) => `<a class="menu-link" href="#${p.role}-${i + 1}">${m}</a>`).join('');
 
-            loginPage.style.display = 'none';
-            app.style.display = 'block';
+            toggleView(true);
             window.scrollTo(0, 0);
-        });
+        };
 
-        document.getElementById('btn-logout').addEventListener('click', function () {
-            app.style.display = 'none';
-            loginPage.style.display = 'flex';
+        document.getElementById('btn-logout').onclick = () => {
+            toggleView(false);
             document.getElementById('form-login').reset();
-        });
+        };
     </script>
 </body>
 </html>
