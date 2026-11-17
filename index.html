@@ -3,205 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIM-PKL SMK (Versi Minimal)</title>
+    <title>Login - SIM-PKL SMK</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <style>
-        .menu-link { display: block; padding: 12px 20px; color: rgba(255,255,255,.8); text-decoration: none; border-left: 4px solid transparent; }
-        .menu-link:hover { background: rgba(255,255,255,.1); color: #fff; border-left-color: #60a5fa; }
-        .view { display: none; }
-        body[data-role="admin"] .view[data-role="admin"], body[data-role="guru"] .view[data-role="guru"], body[data-role="siswa"] .view[data-role="siswa"], body[data-role="alumni"] .view[data-role="alumni"] { display: block; }
-    </style>
 </head>
-<body class="bg-light">
+<body class="bg-dark min-vh-100 d-flex align-items-center justify-content-center p-3">
 
-    <!-- ===== HALAMAN LOGIN ===== -->
-    <section id="login-page" class="min-vh-100 d-flex align-items-center justify-content-center p-3 bg-dark">
-        <div class="bg-white rounded-4 shadow-lg overflow-hidden w-100" style="max-width: 420px;">
-            <div class="bg-primary text-white p-4 text-center">
-                <i class="bi bi-mortarboard-fill fs-1"></i>
-                <h5 class="fw-bold mb-1">SIM-PKL SMK</h5>
-                <small class="text-white-50">Pemilihan &amp; Monitoring Tempat PKL</small>
-            </div>
-            <form id="form-login" class="p-4">
-                <div id="login-error" class="alert alert-danger py-2 small d-none">Username atau password salah.</div>
-                <label class="form-label small fw-semibold">Username / Email</label>
-                <input type="text" id="username" class="form-control mb-3" required>
-                <label class="form-label small fw-semibold">Password</label>
-                <input type="password" id="password" class="form-control mb-3" required>
-                <button type="submit" class="btn btn-primary w-100 fw-semibold">Masuk</button>
-                <p class="small text-muted text-center mt-3 mb-0">
-                    Contoh: admin, budi (guru), andi (siswa), dika (alumni)<br>Password: 123456
-                </p>
-            </form>
+    <div class="bg-white rounded-4 shadow-lg overflow-hidden w-100" style="max-width: 400px;">
+        <div class="bg-primary text-white p-4 text-center">
+            <i class="bi bi-mortarboard-fill fs-1"></i>
+            <h5 class="fw-bold mb-1">SIM-PKL SMK</h5>
+            <small class="text-white-50">Pemilihan &amp; Monitoring Tempat PKL</small>
         </div>
-    </section>
 
-    <!-- ===== INTERFACE UTAMA ===== -->
-    <div id="app" class="d-none">
-        <div class="d-flex flex-column flex-md-row min-vh-100">
-            <aside class="bg-dark text-white flex-shrink-0" style="min-width: 240px;">
-                <div class="p-3 bg-black bg-opacity-25">
-                    <div class="fw-bold">SIM-PKL SMK</div>
-                    <span class="badge bg-info text-dark" id="role-badge"></span>
-                </div>
-                <nav class="mt-2" id="menu"></nav>
-            </aside>
+        <form id="form-login" class="p-4">
+            <div id="msg" class="alert py-2 small d-none"></div>
 
-            <div class="flex-grow-1">
-                <header class="bg-white py-3 px-4 shadow-sm d-flex justify-content-between align-items-center">
-                    <span class="fw-bold" id="nama-user"></span>
-                    <button class="btn btn-outline-danger btn-sm" id="btn-logout">Logout</button>
-                </header>
+            <label class="form-label small fw-semibold">Username / Email</label>
+            <input type="text" id="username" class="form-control mb-3" required>
 
-                <main class="p-4">
-                    <!-- Admin -->
-                    <div class="view" data-role="admin">
-                        <div id="admin-1" class="row g-3 mb-4">
-                            <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Total Akun</small><h4 class="fw-bold mb-0">4</h4></div></div>
-                            <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Tempat PKL</small><h4 class="fw-bold mb-0">3</h4></div></div>
-                            <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Pengajuan Menunggu</small><h4 class="fw-bold mb-0">1</h4></div></div>
-                        </div>
-                        <div id="admin-2" class="bg-white rounded-3 shadow-sm p-3 mb-4">
-                            <h6 class="fw-bold">Manajemen Tempat PKL</h6>
-                            <table class="table mb-0">
-                                <thead class="table-dark"><tr><th>Perusahaan</th><th>Lokasi</th><th>Kuota</th></tr></thead>
-                                <tbody>
-                                    <tr><td>PT. Maju Jaya Abadi</td><td>Kota Metro</td><td>10</td></tr>
-                                    <tr><td>CV. Teknologi Mandiri</td><td>Kota Metro</td><td>6</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="admin-3" class="bg-white rounded-3 shadow-sm p-3">
-                            <h6 class="fw-bold">Data Pengajuan PKL</h6>
-                            <table class="table mb-0">
-                                <thead class="table-dark"><tr><th>Siswa</th><th>Tempat</th><th>Status</th></tr></thead>
-                                <tbody>
-                                    <tr><td>Andi Pratama</td><td>PT. Maju Jaya Abadi</td><td><span class="badge bg-success">Diterima</span></td></tr>
-                                    <tr><td>Citra Lestari</td><td>CV. Teknologi Mandiri</td><td><span class="badge bg-warning text-dark">Menunggu</span></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+            <label class="form-label small fw-semibold">Password</label>
+            <input type="password" id="password" class="form-control mb-3" required>
 
-                    <!-- Guru -->
-                    <div class="view" data-role="guru">
-                        <div id="guru-1" class="row g-3 mb-4">
-                            <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Siswa Bimbingan</small><h4 class="fw-bold mb-0">2</h4></div></div>
-                            <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Pengajuan Menunggu</small><h4 class="fw-bold mb-0">1</h4></div></div>
-                            <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Laporan Perlu Dicek</small><h4 class="fw-bold mb-0">1</h4></div></div>
-                        </div>
-                        <div id="guru-2" class="bg-white rounded-3 shadow-sm p-3 mb-4">
-                            <h6 class="fw-bold">Pengajuan Siswa Bimbingan</h6>
-                            <table class="table mb-0">
-                                <thead class="table-dark"><tr><th>Siswa</th><th>Tempat</th><th>Aksi</th></tr></thead>
-                                <tbody>
-                                    <tr><td>Citra Lestari</td><td>CV. Teknologi Mandiri</td><td><button class="btn btn-sm btn-success">Terima</button> <button class="btn btn-sm btn-danger">Tolak</button></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="guru-3" class="bg-white rounded-3 shadow-sm p-3">
-                            <h6 class="fw-bold">Verifikasi Monitoring</h6>
-                            <table class="table mb-0">
-                                <thead class="table-dark"><tr><th>Siswa</th><th>Kegiatan</th><th>Aksi</th></tr></thead>
-                                <tbody>
-                                    <tr><td>Andi Pratama</td><td>Membuat Modul CRUD Data Pelanggan</td><td><button class="btn btn-sm btn-success">Setujui</button></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+            <button type="submit" class="btn btn-primary w-100 fw-semibold">Masuk</button>
 
-                    <!-- Siswa -->
-                    <div class="view" data-role="siswa">
-                        <div id="siswa-1" class="row g-3 mb-4">
-                            <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Status PKL</small><h5 class="fw-bold text-success mb-0">Diterima</h5></div></div>
-                            <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Laporan Monitoring</small><h4 class="fw-bold mb-0">2</h4></div></div>
-                            <div class="col-4"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Nilai Akhir</small><h4 class="fw-bold mb-0">90.25</h4></div></div>
-                        </div>
-                        <div id="siswa-2" class="bg-white rounded-3 shadow-sm p-3 mb-4">
-                            <h6 class="fw-bold">Tempat PKL Tersedia</h6>
-                            <table class="table mb-0">
-                                <thead class="table-dark"><tr><th>Perusahaan</th><th>Jurusan</th><th>Rating</th></tr></thead>
-                                <tbody>
-                                    <tr><td>PT. Maju Jaya Abadi</td><td>RPL</td><td>4.8</td></tr>
-                                    <tr><td>CV. Teknologi Mandiri</td><td>TKJ</td><td>4.5</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="siswa-3" class="bg-white rounded-3 shadow-sm p-3">
-                            <h6 class="fw-bold">Monitoring Kegiatan PKL</h6>
-                            <table class="table mb-0">
-                                <thead class="table-dark"><tr><th>Tanggal</th><th>Kegiatan</th><th>Status</th></tr></thead>
-                                <tbody>
-                                    <tr><td>2026-11-05</td><td>Setup Environment &amp; Pengenalan Database</td><td><span class="badge bg-success">Disetujui</span></td></tr>
-                                    <tr><td>2026-11-12</td><td>Membuat Modul CRUD Data Pelanggan</td><td><span class="badge bg-warning text-dark">Menunggu</span></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Alumni -->
-                    <div class="view" data-role="alumni">
-                        <div id="alumni-1" class="row g-3 mb-4">
-                            <div class="col-6"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Pengalaman Dibagikan</small><h4 class="fw-bold mb-0">1</h4></div></div>
-                            <div class="col-6"><div class="bg-white rounded-3 shadow-sm p-3 border-start border-4 border-primary"><small class="text-muted">Ulasan Diberikan</small><h4 class="fw-bold mb-0">1</h4></div></div>
-                        </div>
-                        <div id="alumni-2" class="bg-white rounded-3 shadow-sm p-3 mb-4">
-                            <h6 class="fw-bold">Pengalaman PKL</h6>
-                            <strong class="text-primary">Pengalaman Seru Belajar Web Development</strong>
-                            <p class="small mb-0">Tips: Jangan malu bertanya dan selalu datang 15 menit lebih awal.</p>
-                        </div>
-                        <div id="alumni-3" class="bg-white rounded-3 shadow-sm p-3">
-                            <h6 class="fw-bold">Ulasan &amp; Rating</h6>
-                            <strong>PT. Maju Jaya Abadi</strong> <span class="text-warning">★★★★★</span>
-                            <p class="small mb-0">Mentor sangat ramah dan membimbing dari nol.</p>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </div>
+            <p class="small text-muted text-center mt-3 mb-0">
+                Contoh: admin, budi, andi, dika | Pass: 123456
+            </p>
+        </form>
     </div>
 
     <script>
-        const $ = id => document.getElementById(id);
         const akun = [
-            { user: 'admin', email: 'admin@smk.sch.id', role: 'admin', nama: 'Administrator Sekolah' },
-            { user: 'budi', email: 'guru@smk.sch.id', role: 'guru', nama: 'Budi Santoso, S.Kom.' },
-            { user: 'andi', email: 'andi@siswa.smk.sch.id', role: 'siswa', nama: 'Andi Pratama' },
-            { user: 'dika', email: 'dika@alumni.smk.sch.id', role: 'alumni', nama: 'Dika Saputra' }
+            { user: 'admin', email: 'admin@smk.sch.id', role: 'Admin', nama: 'Administrator Sekolah' },
+            { user: 'budi', email: 'guru@smk.sch.id', role: 'Guru', nama: 'Budi Santoso, S.Kom.' },
+            { user: 'andi', email: 'andi@siswa.smk.sch.id', role: 'Siswa', nama: 'Andi Pratama' },
+            { user: 'dika', email: 'dika@alumni.smk.sch.id', role: 'Alumni', nama: 'Dika Saputra' }
         ];
-        const menu = {
-            admin: ['Dashboard', 'Tempat PKL', 'Pengajuan'],
-            guru: ['Dashboard', 'Pengajuan Siswa', 'Verifikasi Monitoring'],
-            siswa: ['Dashboard', 'Tempat PKL', 'Monitoring'],
-            alumni: ['Dashboard', 'Pengalaman', 'Ulasan']
-        };
 
-        const toggleView = login => {
-            $('login-page').classList.toggle('d-none', login);
-            $('login-page').classList.toggle('d-flex', !login);
-            $('app').classList.toggle('d-none', !login);
-        };
-
-        $('form-login').onsubmit = e => {
+        document.getElementById('form-login').onsubmit = e => {
             e.preventDefault();
-            const val = $('username').value.trim().toLowerCase();
+            const val = document.getElementById('username').value.trim().toLowerCase();
             const p = akun.find(a => a.user === val || a.email === val);
+            const msg = document.getElementById('msg');
 
-            if (!p || $('password').value !== '123456') return $('login-error').classList.remove('d-none');
+            if (!p || document.getElementById('password').value !== '123456') {
+                msg.className = 'alert alert-danger py-2 small';
+                msg.textContent = 'Username atau password salah.';
+                return;
+            }
 
-            $('login-error').classList.add('d-none');
-            document.body.dataset.role = p.role;
-            $('role-badge').textContent = p.role.toUpperCase();
-            $('nama-user').textContent = p.nama;
-            $('menu').innerHTML = menu[p.role].map((m, i) => `<a class="menu-link" href="#${p.role}-${i + 1}">${m}</a>`).join('');
-
-            toggleView(true);
-            window.scrollTo(0, 0);
+            msg.className = 'alert alert-success py-2 small';
+            msg.textContent = `Berhasil masuk sebagai ${p.nama} (${p.role})`;
+            // Jika ingin pindah halaman saat berhasil, hapus 2 baris di atas dan aktifkan baris bawah:
+            // location.href = 'dashboard.html';
         };
-
-        $('btn-logout').onclick = () => { toggleView(false); $('form-login').reset(); };
     </script>
 </body>
 </html>
